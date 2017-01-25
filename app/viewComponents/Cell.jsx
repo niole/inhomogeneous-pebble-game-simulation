@@ -28,7 +28,7 @@ export default class Cell extends Component {
 
     return (
       <td style={ this.getCellStyle(value, shouldHighlight) }>
-        { weight }
+        <span className="cell-weight">{ weight }</span>
       </td>
     );
   }

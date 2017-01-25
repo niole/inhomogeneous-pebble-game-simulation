@@ -1,4 +1,11 @@
 td {
   height: 100px;
   width: 100px;
+  text-align: center;
+  font-family: monospace;
+}
+
+.cell-weight {
+  color: whitesmoke;
+  font-size: 2em;
 }
