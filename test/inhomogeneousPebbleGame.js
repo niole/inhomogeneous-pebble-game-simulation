@@ -1,12 +1,14 @@
 var chai = require('chai');
-var game =  require('../dist/inhomogeneousPebbleGame.js');
-
+var InhomogeneousPG = require('../dist/inhomogeneousPebbleGame.js');
 var assert = chai.assert;
-var nextMoveMatrix = game.nextMoveMatrix;
+
+//TODO these are broken
 
 describe('inhomogeneousPebbleGame', function() {
+  var _3 = new InhomogeneousPG(9, 1, 5, 100, 1);
+  var _4 = new InhomogeneousPG(16, 1, 5, 100, 1);
 
-  describe('#nextMoveMatrix', function() {
+  describe('#_generateTransitionMatrix', function() {
     var expectedThreexThree = [
       [3, 1, 0, 0],
       [4, 2, 1, 0],
@@ -39,14 +41,13 @@ describe('inhomogeneousPebbleGame', function() {
     ];
 
     it('should make correct matrix for 3x3 board', function() {
-      var actual = nextMoveMatrix(9);
-      console.log("actual", actual);
+      var actual = _3._generateTransitionMatrix(9);
 
       assert.deepEqual(actual, expectedThreexThree, "should be the same");
     });
 
     it('should make correct matrix for 4x4 board', function() {
-      var actual = nextMoveMatrix(16);
+      var actual = _4._generateTransitionMatrix(16);
 
       assert.deepEqual(actual, expectedFourxFour, "should be the same");
     });

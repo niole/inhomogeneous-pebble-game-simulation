@@ -1,3 +1,4 @@
 node_modules/
 npm-debug.log
-distt/bundle.js
+dist/viewComponents/*.js
+dist/*.js

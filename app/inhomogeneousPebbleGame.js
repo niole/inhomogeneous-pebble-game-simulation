@@ -15,8 +15,9 @@ import Histogram from './Histogram.js';
  * state which is the outcomes matrix
  * */
 
-export default class InhomogenousPG  {
-  constructor(size, minWeight, maxWeight, timeout = 100, totalIterations) {
+
+export default class InhomogeneousPG  {
+  constructor(size, minWeight, maxWeight, timeout, totalIterations) {
     this._hist = new Histogram(size);
     this._weights = this._generateWeights(size, minWeight, maxWeight);
     this._transitionMatrix = this._generateTransitionMatrix(size);
@@ -49,7 +50,7 @@ export default class InhomogenousPG  {
     //callback will be executed on a timeout
     const self = this;
 
-    while (this.getRemainingIterations()) {
+    if (this.getRemainingIterations()) {
       //run simulation again
       const nextPos = this.getNextPos();
 
@@ -60,8 +61,9 @@ export default class InhomogenousPG  {
       this.updateHistogram();
 
       setTimeout(() => {
-        callback(self.getHistogram());
+        callback(self.getHistogram().get());
         self.decRemainingIterations();
+        self.run(callback);
       }, this.getTimeout());
 
     }
@@ -85,13 +87,13 @@ export default class InhomogenousPG  {
     return this._weights;
   }
 
-  getWeightAt() {
-    return this._weights;
+  getWeightAt(index) {
+    return this._weights[index];
   }
 
   shouldMove(from, to) {
     const transitionProb = Math.random();
-    return transitionProb <= this.getWeightAt(to)/this.getWeightAt(from);
+    return transitionProb <= Math.min(this.getWeightAt(to)/this.getWeightAt(from), 1);
   }
 
   _generateWeights(boardSize, minWeight, maxWeight) {
