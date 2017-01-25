@@ -1,9 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import {
-  scaleLinear,
-  interpolateHcl,
-  rgb,
-} from 'd3';
+import { colorScale } from '../ColorUtil.js';
 
 
 const { number, bool } = PropTypes;
@@ -15,18 +11,11 @@ const propTypes = {
 
 
 export default class Cell extends Component {
-  constructor() {
-    super();
-      this.colorScale = scaleLinear().domain([0, 1])
-            .interpolate(interpolateHcl)
-            .range([rgb("#007AFF"), rgb('#FFF500')]);
-  }
-
   getCellStyle(value, shouldHighlight) {
     const color = shouldHighlight ? '#c0c446' : 'white';
     return {
       border: `2px solid ${color}`,
-      background: this.colorScale(value),
+      background: colorScale(value),
     };
   }
 
