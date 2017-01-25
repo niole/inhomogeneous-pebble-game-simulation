@@ -1,5 +1,5 @@
 # inhomogeneous-pebble-game-simulation
-a visualization that runs the inhomogeneous pebble game with random weights
+a visualization that illustrates a Markov Chain Monte Carlo algorithm for the inhomogeneous pebble game, which is initialized with random weights
 
 run in command line:
 
