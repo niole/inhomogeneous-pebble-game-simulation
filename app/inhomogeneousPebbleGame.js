@@ -25,6 +25,7 @@ export default class InhomogeneousPG  {
     this._timeout = timeout;
     this._remainingIterations = totalIterations;
     this.size = size;
+    this.timer = null;
 
     this.updateHistogram();
   }
@@ -60,14 +61,18 @@ export default class InhomogeneousPG  {
 
       this.updateHistogram();
 
-      setTimeout(() => {
-        callback(self.getHistogram().get());
+      this.timer = setTimeout(() => {
+        callback(self.getHistogram().get(), this.getPos());
         self.decRemainingIterations();
         self.run(callback);
       }, this.getTimeout());
 
     }
 
+  }
+
+  stop() {
+    clearTimeout(this.timer);
   }
 
   getNextPos() {
