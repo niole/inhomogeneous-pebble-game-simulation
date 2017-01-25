@@ -4,7 +4,6 @@ import Board from './viewComponents/Board.jsx';
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log('loaded');
   ReactDOM.render(
     <Board
       size={ 9 }
