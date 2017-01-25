@@ -4,13 +4,14 @@ import InhomogeneousPG from '../inhomogeneousPebbleGame.js';
 import Cell from './Cell.jsx';
 
 
-const { number } = PropTypes;
+const { number, func } = PropTypes;
 const propTypes = {
   size: number.isRequired,
   minWeight: number.isRequired,
   maxWeight: number.isRequired,
   timeout: number.isRequired,
   totalIterations: number.isRequired,
+  resetState: func.isRequired,
 };
 
 
@@ -24,7 +25,6 @@ export default class Board extends Component {
       timeout,
       totalIterations,
     } = props;
-
 
     this.pg = new InhomogeneousPG(
       size,
@@ -43,11 +43,17 @@ export default class Board extends Component {
     };
 
     this.updateView = this.updateView.bind(this);
+    this.resetState = this.resetState.bind(this);
   }
 
   componentDidMount() {
     //kick off pebble game
     this.pg.run(this.updateView);
+  }
+
+  resetState() {
+    this.pg.stop();
+    this.props.resetState();
   }
 
   updateView(histogram, index) {
@@ -86,7 +92,12 @@ export default class Board extends Component {
       board[i] = <tr key={ `row-${i}` }>{ width }</tr>;
     }
 
-    return <table><tbody>{ board }</tbody></table>;
+    return (
+      <div>
+        <button className="reset-btn" onClick={ this.resetState }>Reset</button>
+        <table><tbody>{ board }</tbody></table>
+      </div>
+    );
   }
 }
 

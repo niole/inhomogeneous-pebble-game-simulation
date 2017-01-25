@@ -1,8 +1,37 @@
+body {
+  font-family: monospace;
+}
+
+form > div {
+  margin: 10px;
+}
+
+button {
+  padding: 5px 10px;
+  margin-left: 10px;
+  font-family: monospace;
+  border-radius: 2px;
+  border: none;
+  background: darkkhaki;
+}
+
+input {
+  padding: 5px 10px;
+}
+
 td {
   height: 100px;
   width: 100px;
   text-align: center;
-  font-family: monospace;
+}
+
+table {
+  margin: 5px;
+}
+
+#app-container {
+  height: 100%;
+  width: 100%;
 }
 
 .cell-weight {
