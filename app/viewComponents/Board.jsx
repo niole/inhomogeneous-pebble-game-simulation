@@ -1,7 +1,17 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { assert } from 'chai';
 import InhomogeneousPG from '../inhomogeneousPebbleGame.js';
 import Cell from './Cell.jsx';
+
+
+const { number } = PropTypes;
+const propTypes = {
+  size: number.isRequired,
+  minWeight: number.isRequired,
+  maxWeight: number.isRequired,
+  timeout: number.isRequired,
+  totalIterations: number.isRequired,
+};
 
 
 export default class Board extends Component {
@@ -15,7 +25,6 @@ export default class Board extends Component {
       totalIterations,
     } = props;
 
-    this.width = Math.sqrt(size);
 
     this.pg = new InhomogeneousPG(
       size,
@@ -25,8 +34,12 @@ export default class Board extends Component {
       totalIterations
     );
 
+    this.width = Math.sqrt(size);
+    this.weights = this.pg.getWeights();
+
     this.state = {
       histogram: this.pg.getHistogram(),
+      lastUpdatedIndex: this.pg.getPos(),
     };
 
     this.updateView = this.updateView.bind(this);
@@ -37,12 +50,19 @@ export default class Board extends Component {
     this.pg.run(this.updateView);
   }
 
-  updateView(histogram) {
-    this.setState({ histogram });
+  updateView(histogram, index) {
+    this.setState({
+      histogram,
+      lastUpdatedIndex: index,
+    });
   }
 
   render() {
-    const { histogram } = this.state;
+    const { totalIterations } = this.props;
+    const {
+      histogram,
+      lastUpdatedIndex,
+    } = this.state;
 
     let board = new Array(this.width);
     let index = 0;
@@ -53,7 +73,14 @@ export default class Board extends Component {
       let width = new Array(this.width);
       for (; j < this.width; j++) {
           index = i*this.width+j;
-          width[j] = <Cell key={ `cell-${index}` } value={ histogram[index] }/>;
+          width[j] = (
+            <Cell
+              key={ `cell-${index}` }
+              value={ histogram[index]/totalIterations }
+              weight={ this.weights[index] }
+              shouldHighlight={ index === lastUpdatedIndex }
+            />
+          );
       }
 
       board[i] = <tr key={ `row-${i}` }>{ width }</tr>;
@@ -62,3 +89,5 @@ export default class Board extends Component {
     return <table><tbody>{ board }</tbody></table>;
   }
 }
+
+Board.propTypes = propTypes;
